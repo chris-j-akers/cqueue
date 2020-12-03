@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
-#include "../queue.h"
+#include "../cqueue.h"
 #include "cakelog/cakelog.h"
 
 char* read_data_file(const char *dict_file) {
