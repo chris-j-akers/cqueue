@@ -8,7 +8,19 @@ Queue* create_queue(long init_capacity, long increments) {
     q->capacity = init_capacity;
     q->increments = increments;
     q->queue = malloc(sizeof(void*) * init_capacity);
+}
 
+Queue* shrink_queue(Queue* src) {
+
+    long new_capacity = src->tail - src->head;
+    Queue* dest = create_queue(new_capacity, src->increments);
+
+    for (int i=src->head; i<src->tail; i++) {
+        enqueue(dest, dequeue(src));
+    }
+
+    destroy_queue(src);
+    return dest;
 }
 
 void destroy_queue(Queue* q) {
@@ -31,6 +43,7 @@ void enqueue(Queue* q, void* item) {
     if (q->tail == q->capacity) {
         q = resize_queue(q);
     }
+    
     q->queue[q->tail] = item;
     q->tail++;
 
@@ -41,6 +54,7 @@ void* dequeue(Queue* q) {
     if (q->head > q->tail) {
         return NULL;
     }
+    
     void* tmp;
     tmp = q->queue[q->head];
     q->head++;

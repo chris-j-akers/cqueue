@@ -69,19 +69,38 @@ int main(int argc, char** argv) {
 
     cakelog("start");
 
+    cakelog("Bulding queue with capacity of 500000");
+
     Queue* q = build_queue(buffer, 500000, 1);
+
+    cakelog("Built.");
 
     cakelog("stop");
 
     printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
 
+    cakelog("Dequeueing 100,000 items");
     char* item;
-    while( (item = (char*)dequeue(q)) != NULL) {
-        // printf("%s\n", item);
+    for (int i=0; i<=100000; i++) {
+        item = dequeue(q);
+        // if ( i % 10000 == 0) {
+        //     printf("Word at %d is: [%s]\n", i, item);
+        // }
     }
+    printf("Stopped at %s\n", (char*)item);
+
 
     printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    printf("Shrinking queue");
+    q = shrink_queue(q);
+    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    item = dequeue(q);
+    printf("Continued at %s\n", (char*)item);
 
+    while ((item = dequeue(q)) != NULL) {
+        printf("%s\n", item);
+    }
+    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
     destroy_queue(q);
 
     cakelog_stop();

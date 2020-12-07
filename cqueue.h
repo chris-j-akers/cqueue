@@ -10,6 +10,7 @@ struct Queue {
 typedef struct Queue Queue;
 
 Queue* create_queue(long init_capacity, long increments);
+Queue* shrink_queue(Queue* src);
 void destroy_queue(Queue* q);
 Queue* resize_queue(Queue* q);
 void enqueue(Queue* q, void* item);
