@@ -4,14 +4,16 @@ struct QDCQueue {
     long head;
     long tail;
     long capacity;
-    long increments;
+    long grow_by;
     void ** queue;
 };
 typedef struct QDCQueue QDCQueue;
 
-QDCQueue* create_queue(long init_capacity, long increments);
-QDCQueue* shrink_queue(QDCQueue* src);
+QDCQueue* create_queue(long initial_capacity, long grow_by);
 void destroy_queue(QDCQueue* q);
-QDCQueue* resize_queue(QDCQueue* q);
+
+QDCQueue* grow_queue(QDCQueue* q);
+QDCQueue* shrink_queue(QDCQueue* src);
+
 void enqueue(QDCQueue* q, void* item);
 void* dequeue(QDCQueue* q);

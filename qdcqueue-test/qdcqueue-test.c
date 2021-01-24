@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
 
     cakelog("stop");
 
-    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
 
     cakelog("Dequeueing 100,000 items");
     char* item;
@@ -89,17 +89,17 @@ int main(int argc, char** argv) {
     printf("Stopped at %s\n", (char*)item);
 
 
-    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
     printf("Shrinking queue");
     q = shrink_queue(q);
-    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
     item = dequeue(q);
     printf("Continued at %s\n", (char*)item);
 
     while ((item = dequeue(q)) != NULL) {
         printf("%s\n", item);
     }
-    printf("capacity: %ld, increments: %ld, head: %ld, tail: %ld\n", q->capacity, q->increments, q->head, q->tail);
+    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
     destroy_queue(q);
 
     cakelog_stop();

@@ -1,20 +1,29 @@
 #include "qdcqueue.h"
 
-QDCQueue* create_queue(long initial_capacity, long increments) {
+QDCQueue* create_queue(long initial_capacity, long grow_by) {
 
     QDCQueue* q = malloc(sizeof(QDCQueue));
+    
     q->head = 0;
     q->tail = 0;
     q->capacity = initial_capacity;
-    q->increments = increments;
+    q->grow_by = grow_by;
     q->queue = malloc(sizeof(void*) * initial_capacity);
+
     return q;
+
+}
+
+void destroy_queue(QDCQueue* q) {
+
+    free(q->queue);
+    free(q);
 }
 
 QDCQueue* shrink_queue(QDCQueue* src) {
 
     long new_capacity = src->tail - src->head;
-    QDCQueue* dest = create_queue(new_capacity, src->increments);
+    QDCQueue* dest = create_queue(new_capacity, src->grow_by);
 
     for (int i=src->head; i<src->tail; i++) {
         enqueue(dest, dequeue(src));
@@ -24,17 +33,12 @@ QDCQueue* shrink_queue(QDCQueue* src) {
     return dest;
 }
 
-void destroy_queue(QDCQueue* q) {
+QDCQueue* grow_queue(QDCQueue* q) {
 
-    free(q->queue);
-    free(q);
-}
+    long new_capacity = q->capacity + q->grow_by;
+    q->queue = realloc(q->queue, sizeof(void*) * new_capacity);
+    q->capacity = new_capacity;
 
-QDCQueue* resize_queue(QDCQueue* q) {
-
-    long new_size = q->capacity + q->increments;
-    q->queue = realloc(q->queue, sizeof(void*) * new_size);
-    q->capacity = new_size;
     return q;
 
 }
@@ -42,7 +46,7 @@ QDCQueue* resize_queue(QDCQueue* q) {
 void enqueue(QDCQueue* q, void* item) {
 
     if (q->tail == q->capacity) {
-        q = resize_queue(q);
+        q = grow_queue(q);
     }
     
     q->queue[q->tail] = item;
