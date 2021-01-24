@@ -1,13 +1,13 @@
 #include "qdcqueue.h"
 
-QDCQueue* create_queue(long init_capacity, long increments) {
+QDCQueue* create_queue(long initial_capacity, long increments) {
 
     QDCQueue* q = malloc(sizeof(QDCQueue));
     q->head = 0;
     q->tail = 0;
-    q->capacity = init_capacity;
+    q->capacity = initial_capacity;
     q->increments = increments;
-    q->queue = malloc(sizeof(void*) * init_capacity);
+    q->queue = malloc(sizeof(void*) * initial_capacity);
     return q;
 }
 

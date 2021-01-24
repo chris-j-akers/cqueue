@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -7,7 +6,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
-#include "../cqueue.h"
+#include "../qdcqueue.h"
 #include "cakelog/cakelog.h"
 
 char* read_data_file(const char *dict_file) {
@@ -44,9 +43,9 @@ char* read_data_file(const char *dict_file) {
     
 }
 
-Queue* build_queue(char* buffer, long capacity, long increment) {
+QDCQueue* build_queue(char* buffer, long capacity, long increment) {
  
-    Queue* q = create_queue(capacity, increment);
+    QDCQueue* q = create_queue(capacity, increment);
     
     long index = 0;
     char * word = strtok(buffer, "\n\0");
@@ -71,7 +70,7 @@ int main(int argc, char** argv) {
 
     cakelog("Bulding queue with capacity of 500000");
 
-    Queue* q = build_queue(buffer, 500000, 1);
+    QDCQueue* q = build_queue(buffer, 500000, 1);
 
     cakelog("Built.");
 
