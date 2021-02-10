@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 #include "../qdcqueue.h"
-#include "cakelog/cakelog.h"
 
 char* read_data_file(const char *dict_file) {
 
@@ -43,10 +42,8 @@ char* read_data_file(const char *dict_file) {
     
 }
 
-QDCQueue* build_queue(char* buffer, long capacity, long increment) {
- 
-    QDCQueue* q = create_queue(capacity, increment);
-    
+QDCQueue* populate_queue(char* buffer, QDCQueue* q) {
+     
     long index = 0;
     char * word = strtok(buffer, "\n\0");
     
@@ -60,48 +57,43 @@ QDCQueue* build_queue(char* buffer, long capacity, long increment) {
     return q;
 }
 
+void print_queue_info(QDCQueue* q) {
+    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld, length: %ld\n", q->capacity, q->grow_by, q->head, q->tail, q->tail-q->head);
+}
+
 int main(int argc, char** argv) {
 
-    cakelog_initialise(argv[0], true);
+    printf("building new queue with capacity of 5 items\n");
 
+    QDCQueue* q = create_queue(5, 10);
+    print_queue_info(q);
+
+    printf("reading datafile into buffer and adding items to queue\n");
     char* buffer = read_data_file(argv[1]);
+    q = populate_queue(buffer, q);
 
-    cakelog("start");
+    print_queue_info(q);
 
-    cakelog("Bulding queue with capacity of 500000");
-
-    QDCQueue* q = build_queue(buffer, 500000, 1);
-
-    cakelog("Built.");
-
-    cakelog("stop");
-
-    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
-
-    cakelog("Dequeueing 100,000 items");
-    char* item;
-    for (int i=0; i<=100000; i++) {
-        item = dequeue(q);
-        // if ( i % 10000 == 0) {
-        //     printf("Word at %d is: [%s]\n", i, item);
-        // }
+    printf("dequeueing 5 items\n");
+    for (int i=0; i<5; i++) {
+        printf("\titem: %s\n", (char*)dequeue(q));
     }
-    printf("Stopped at %s\n", (char*)item);
 
+    print_queue_info(q);
 
-    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
-    printf("Shrinking queue");
+    printf("Shrinking queue\n");
+
     q = shrink_queue(q);
-    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
-    item = dequeue(q);
-    printf("Continued at %s\n", (char*)item);
 
-    while ((item = dequeue(q)) != NULL) {
-        printf("%s\n", item);
+    print_queue_info(q);
+
+    printf("peeking next item in queue: %s\n", (char*)peek(q));
+
+    printf("dequeing rest of items\n");
+    char* item;
+    while( (item = dequeue(q)) != NULL) {
+        printf("\titem: %s\n", item);
     }
-    printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld\n", q->capacity, q->grow_by, q->head, q->tail);
-    destroy_queue(q);
-
-    cakelog_stop();
-
+    printf("done!\n");
+    print_queue_info(q);
 }

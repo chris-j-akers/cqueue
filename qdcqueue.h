@@ -9,11 +9,18 @@ struct QDCQueue {
 };
 typedef struct QDCQueue QDCQueue;
 
-QDCQueue* create_queue(long initial_capacity, long grow_by);
+/* Intialise & Destroy */
+
+QDCQueue* create_queue(const long initial_capacity, const long grow_by);
 void destroy_queue(QDCQueue* q);
+
+/* Housekeeping */
 
 QDCQueue* grow_queue(QDCQueue* q);
 QDCQueue* shrink_queue(QDCQueue* src);
 
+/* Operations */
+
 void enqueue(QDCQueue* q, void* item);
 void* dequeue(QDCQueue* q);
+void* peek(const QDCQueue* q);

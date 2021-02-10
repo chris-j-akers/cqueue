@@ -56,7 +56,7 @@ void enqueue(QDCQueue* q, void* item) {
 
 void* dequeue(QDCQueue* q) {
 
-    if (q->head > q->tail) {
+    if (q->head - q->tail == 0) {
         return NULL;
     }
     
@@ -65,5 +65,14 @@ void* dequeue(QDCQueue* q) {
     q->head++;
     return tmp;
 
+}
+
+void* peek(const QDCQueue* q) {
+
+    if (q->head > q->tail) {
+        return NULL;
+    }
+
+    return q->queue[q->head];
 }
 
