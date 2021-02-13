@@ -96,4 +96,6 @@ int main(int argc, char** argv) {
     }
     printf("done!\n");
     print_queue_info(q);
+
+    destroy_queue(q);
 }
