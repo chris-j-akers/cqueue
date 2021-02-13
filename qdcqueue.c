@@ -1,6 +1,6 @@
 #include "qdcqueue.h"
 
-QDCQueue* create_queue(long initial_capacity, long grow_by) {
+QDCQueue* create_queue(const long initial_capacity, const long grow_by) {
 
     QDCQueue* q = malloc(sizeof(QDCQueue));
     
@@ -43,7 +43,7 @@ QDCQueue* grow_queue(QDCQueue* q) {
 
 }
 
-void enqueue(QDCQueue* q, void* item) {
+void enqueue(QDCQueue* q, const void* item) {
 
     if (q->tail == q->capacity) {
         q = grow_queue(q);
