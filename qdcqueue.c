@@ -20,6 +20,11 @@ void destroy_queue(QDCQueue* q) {
     free(q);
 }
 
+// Shrink queue simply copies all existing elements into a new queue that has
+// been allocated with exactly the right amount of items. Note that all
+// operations to create the new queue and copy the items in are QDCQueue's own
+// operations.
+
 QDCQueue* shrink_queue(QDCQueue* src) {
 
     long new_capacity = src->tail - src->head;
@@ -33,6 +38,12 @@ QDCQueue* shrink_queue(QDCQueue* src) {
     return dest;
 }
 
+// grow_queue() uses realloc() to add space to the queue. The internal
+// implementation of realloc() means there is no guarantee how the operation to
+// add more space is performed. It could be added to the end of the current
+// pointer chain, or, if there's no room,  new space will have to be allocated
+// elsewhere and the existing items copied in.
+
 QDCQueue* grow_queue(QDCQueue* q) {
 
     long new_capacity = q->capacity + q->grow_by;
@@ -43,7 +54,10 @@ QDCQueue* grow_queue(QDCQueue* q) {
 
 }
 
-void enqueue(QDCQueue* q, const void* item) {
+// enqueue() first checks to see if the queue is already at capacity. If it is,
+// it calls grow_queue() to expand the available space.
+
+void enqueue(QDCQueue* q, void* item) {
 
     if (q->tail == q->capacity) {
         q = grow_queue(q);
@@ -53,6 +67,12 @@ void enqueue(QDCQueue* q, const void* item) {
     q->tail++;
 
 }
+
+// dequeue() obviously needs to check there are items in the queue first. It
+// returns NULL if not.
+//
+// Note that dequeue doesn't free any memory, it merely increases the head of
+// the queue to the next item. To free memory, shrink_queue must be called.
 
 void* dequeue(QDCQueue* q) {
 
@@ -66,6 +86,9 @@ void* dequeue(QDCQueue* q) {
     return tmp;
 
 }
+
+// A peek() operation is usually useful for these types of data structures. To
+// what's coming next without actually deqeueing the item.
 
 void* peek(const QDCQueue* q) {
 

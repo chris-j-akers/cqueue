@@ -8,6 +8,14 @@
 #include <stdbool.h>
 #include "../qdcqueue.h"
 
+// This function will read in a file of words separated by newline. The idea
+// being that all these words are to be added to the queue. It returns a pointer
+// to the buffer containing all those words.
+//
+// Here, we could read in the data a word at a time and add each one to the test
+// queue as we go, but it's quicker to just gulp the lot into memory and sift
+// through it there. This is, after all, just a test of the queue.
+
 char* read_data_file(const char *dict_file) {
 
     const int dictionary_fd = open(dict_file, O_RDONLY);
@@ -42,6 +50,9 @@ char* read_data_file(const char *dict_file) {
     
 }
 
+// Just a loop that scans through the buffer using strtok to get each word and
+// then enqueue() it.
+
 QDCQueue* populate_queue(char* buffer, QDCQueue* q) {
      
     long index = 0;
@@ -57,9 +68,14 @@ QDCQueue* populate_queue(char* buffer, QDCQueue* q) {
     return q;
 }
 
+// Print out some stats about the queue. Called every so often in main() to
+// check progress.
+
 void print_queue_info(QDCQueue* q) {
     printf("capacity: %ld, grow_by: %ld, head: %ld, tail: %ld, length: %ld\n", q->capacity, q->grow_by, q->head, q->tail, q->tail-q->head);
 }
+
+// Run some tests on the queue
 
 int main(int argc, char** argv) {
 
