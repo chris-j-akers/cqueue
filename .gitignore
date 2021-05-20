@@ -10,3 +10,4 @@
 
 *.log
 qdcqtest*
+.vscode/settings.json
