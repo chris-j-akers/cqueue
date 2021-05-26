@@ -76,11 +76,11 @@ This repo contains a basic implementation of a Queue written in C.
 
 ## Building QDCQueue
 
-Simply include the source files with your own project and add an `include` directive:
+Simply add an `include` directive to your own project (with the correct location)
 
 `#include "qdcqueue.h"`
 
-Then add the source file to your compilation command:
+Then add the C source file to your compilation command:
 
 `gcc -o myprogram myprogram.c qdcqueue.c`
 
@@ -93,4 +93,4 @@ Alternatively, you could build it as a static library:
 
 ## Testing QDCQueue
 
-The `./qdcqueue-test/ directory contains source and artefacts to run a couple of tests on the queue. It also includes test data.
+The `./qdcqueue-test/` directory contains source and artefacts to run a couple of tests on the queue. It also includes test data.
