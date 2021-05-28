@@ -1,3 +1,6 @@
+#ifndef QDCQUEUE_H
+#define QDCQUEUE_H
+
 #include <stdlib.h>
 
 struct QDCQueue {
@@ -42,3 +45,5 @@ QDCQueue* shrink_queue(QDCQueue* src);
 void enqueue(QDCQueue* q, void* item);
 void* dequeue(QDCQueue* q);
 void* peek(const QDCQueue* q);
+
+#endif
